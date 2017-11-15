@@ -45,11 +45,9 @@ var dotenvFiles = [
 // https://github.com/motdotla/dotenv
 dotenvFiles.forEach(dotenvFile => {
   if (fs.existsSync(dotenvFile)) {
-    console.log('loading %s', dotenvFile);
     require('dotenv').config({
       path: dotenvFile,
     });
-    console.log(process.env.ENV);
   }
 });
 
