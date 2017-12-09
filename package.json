@@ -1,6 +1,6 @@
 {
   "name": "@remy/envy",
-  "version": "1.0.1",
+  "version": "2.0.0",
   "description":
     "The [create-react-app](https://github.com/facebookincubator/create-react-app) environment loader for consistent reuse in other projects.",
   "main": "index.js",
