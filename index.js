@@ -24,7 +24,7 @@ const dotenvPath = resolveApp('.env');
 const NODE_ENV = process.env.NODE_ENV;
 if (!NODE_ENV) {
   process.env.NODE_ENV = 'development';
-  console.warn('NODE_ENV set to default "development" value');
+  // console.warn('NODE_ENV set to default "development" value');
 }
 
 // https://github.com/bkeepers/dotenv#what-other-env-files-can-i-use
