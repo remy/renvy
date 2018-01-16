@@ -1,12 +1,14 @@
 {
   "name": "@remy/envy",
-  "version": "2.1.0",
+  "version": "2.1.2",
   "description": "The [create-react-app](https://github.com/facebookincubator/create-react-app) environment loader for consistent reuse in other projects.",
   "main": "index.js",
   "scripts": {
     "test": "jest"
   },
-  "bin": "node cli.js",
+  "bin": {
+    "envy": "./cli.js"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
