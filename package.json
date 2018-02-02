@@ -1,10 +1,11 @@
 {
   "name": "@remy/envy",
-  "version": "3.0.0",
+  "version": "3.1.0",
   "description": "The [create-react-app](https://github.com/facebookincubator/create-react-app) environment loader for consistent reuse in other projects.",
   "main": "index.js",
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "try": "NODE_ENV=test node -e 'console.log(process.env.NODE_ENV)'"
   },
   "bin": {
     "envy": "./cli.js"

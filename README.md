@@ -8,7 +8,7 @@ The [create-react-app](https://github.com/facebookincubator/create-react-app) en
 npm install --save @remy/envy
 ```
 
-## Usage
+## Typical usage
 
 ```js
 // populates process.env
@@ -18,7 +18,7 @@ require('@remy/envy'); // do this as early as possible in the code
 const { raw, stringified } = require('@remy/envy');
 ```
 
-## What `.env` files can be used?
+<details><summary>What `.env` files can be used?</summary>
 
 * `.env`: Default.
 * `.env.local`: Local overrides. **This file is loaded for all environments except test.**
@@ -37,3 +37,26 @@ Please refer to the [dotenv documentation](https://github.com/motdotla/dotenv) f
 
 >Note: If you are defining environment variables for development, your CI and/or hosting platform will most likely need
 these defined as well. Consult their documentation how to do this. For example, see the documentation for [Travis CI](https://docs.travis-ci.com/user/environment-variables/) or [Heroku](https://devcenter.heroku.com/articles/config-vars).
+
+</details>
+
+## CLI usage
+
+Beyond using the package as a dependency, a CLI utility is provided for testing environnement values and _also_ injecting the environment variables into a command.
+
+Assuming the package was installed locally to your project, and using [npx](https://www.npmjs.com/package/npx) to run a `.bin` command:
+
+```shell
+$ NODE_ENV=test npx envy
+> # prints entire environment loaded
+
+$ NODE_ENV=test npx envy NODE_ENV
+> test
+
+$ NODE_ENV=test npx envy -- node -e "console.log(process.env.NODE_ENV)"
+> test
+```
+
+### `--` Double dash to signify the end of the options
+
+When passing `--` to `envy` everything afterwards will be executed with the modified environment (a bit like the `foreman` command line too).
