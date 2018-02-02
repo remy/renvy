@@ -1,18 +1,17 @@
 const { spawn } = require('child_process');
 
-const stdio = [process.stdin, process.stdout, process.stderr];
-const sh = 'sh';
-const shFlag = '-c';
-const spawnOptions = {
-  // env: process.env,
-  stdio: stdio,
+let sh = 'sh';
+let shFlag = '-c';
+
+const options = {
+  stdio: 'inherit',
 };
 
 if (process.platform === 'win32') {
   // taken from npm's cli: https://git.io/vNFD4
   sh = process.env.comspec || 'cmd';
   shFlag = '/d /s /c';
-  spawnOptions.windowsVerbatimArguments = true;
+  options.windowsVerbatimArguments = true;
 }
 
 const args = process.argv
@@ -20,4 +19,4 @@ const args = process.argv
   .map(_ => JSON.stringify(_))
   .join(' ');
 
-spawn(sh, [shFlag, args], spawnOptions);
+spawn(sh, [shFlag, args], options);

@@ -1,6 +1,8 @@
 # envy
 
-The [create-react-app](https://github.com/facebookincubator/create-react-app) environment loader for consistent reuse in other projects.
+The [create-react-app](https://github.com/facebookincubator/create-react-app) environment loader for consistent reuse in other projects with additions for command line usage.
+
+**Important:** envy will default to `NODE_ENV=development` if there is no value on `NODE_ENV`.
 
 ## Installation
 
