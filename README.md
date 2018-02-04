@@ -6,7 +6,7 @@ The [create-react-app](https://github.com/facebookincubator/create-react-app) en
 
 ## Installation
 
-```
+```shell
 npm install --save @remy/envy
 ```
 
