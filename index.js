@@ -27,7 +27,6 @@ if (!NODE_ENV) {
   // console.warn('NODE_ENV set to default "development" value');
 }
 
-
 // https://github.com/bkeepers/dotenv#what-other-env-files-can-i-use
 var dotenvFiles = [
   `${dotenvPath}.${NODE_ENV}.local`,
@@ -43,11 +42,30 @@ var dotenvFiles = [
 // if this file is missing. dotenv will never modify any environment variables
 // that have already been set.
 // https://github.com/motdotla/dotenv
+
+const hasExample = fs.existsSync(`${dotenvPath}.example`);
+
 dotenvFiles.forEach(dotenvFile => {
   if (fs.existsSync(dotenvFile)) {
-    require('dotenv').config({
+    const dotenvExpand = require('dotenv-expand');
+    const config = {
       path: dotenvFile,
-    });
+    };
+
+    if (hasExample) {
+      try {
+        require('dotenv-safe').config(config);
+      } catch (e) {
+        e.message = e.message
+          .replace(/If you expect any of these variables(?:.|\s)+$/im, '')
+          .trim();
+        throw e;
+      }
+    } else {
+      require('dotenv').config(config);
+    }
+
+    if (!process.env.NO_EXPAND) dotenvExpand({ parsed: process.env });
   }
 });
 

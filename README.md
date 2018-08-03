@@ -42,6 +42,12 @@ these defined as well. Consult their documentation how to do this. For example, 
 
 </details>
 
+## Features
+
+- Expands `$VAR` by default (via [dotenv-expand](https://github.com/motdotla/dotenv-expand)). **Important** escaped `\$` does not work, and is expanded to `undefined`. To disable env expansion, set environment value `NO_EXPAND=true`.
+- Supports `.env.example` if the file is found in the current working directory (via [dotenv-safe](https://github.com/rolodato/dotenv-safe/blob/master/index.js))
+
+
 ## CLI usage
 
 Beyond using the package as a dependency, a CLI utility is provided for testing environnement values and _also_ injecting the environment variables into a command.

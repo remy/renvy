@@ -1,7 +1,8 @@
 {
   "name": "@remy/envy",
-  "version": "3.1.1",
-  "description": "The [create-react-app](https://github.com/facebookincubator/create-react-app) environment loader for consistent reuse in other projects.",
+  "version": "4.0.0",
+  "description":
+    "The create-react-app environment loader, enhanced and separated for consistent reuse in other projects.",
   "main": "index.js",
   "scripts": {
     "test": "jest",
@@ -10,11 +11,13 @@
   "bin": {
     "envy": "./cli.js"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "keywords": ["env", "environment", "dotenv", ".env", "config"],
+  "author": "Remy Sharp",
+  "license": "MIT",
   "dependencies": {
-    "dotenv": "^4.0.0"
+    "dotenv": "^4.0.0",
+    "dotenv-expand": "^4.2.0",
+    "dotenv-safe": "^6.0.0"
   },
   "devDependencies": {
     "jest": "^21.2.1"
