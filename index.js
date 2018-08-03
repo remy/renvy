@@ -56,9 +56,10 @@ dotenvFiles.forEach(dotenvFile => {
       try {
         require('dotenv-safe').config(config);
       } catch (e) {
-        e.message = e.message
-          .replace(/If you expect any of these variables(?:.|\s)+$/im, '')
-          .trim();
+        e.message =
+          e.message
+            .replace(/If you expect any of these variables(?:.|\s)+$/im, '')
+            .trim() + '\n';
         throw e;
       }
     } else {

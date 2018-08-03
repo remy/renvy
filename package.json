@@ -1,6 +1,6 @@
 {
   "name": "@remy/envy",
-  "version": "4.0.0",
+  "version": "4.0.1",
   "description":
     "The create-react-app environment loader, enhanced and separated for consistent reuse in other projects.",
   "main": "index.js",
