@@ -11,6 +11,7 @@
   "bin": {
     "envy": "./cli.js"
   },
+  "files": ["cli.js", "index.js", "spawn.js"],
   "keywords": ["env", "environment", "dotenv", ".env", "config"],
   "author": "Remy Sharp",
   "license": "MIT",
