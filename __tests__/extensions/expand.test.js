@@ -1,6 +1,5 @@
 process.env.NODE_ENV = 'foo';
 process.chdir(__dirname);
-console.log('chdir(%s)', __dirname);
 require('../../');
 
 test('reads local over all others', () => {
