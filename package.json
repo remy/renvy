@@ -1,8 +1,7 @@
 {
   "name": "@remy/envy",
   "version": "4.0.1",
-  "description":
-    "The create-react-app environment loader, enhanced and separated for consistent reuse in other projects.",
+  "description": "The create-react-app environment loader, enhanced and separated for consistent reuse in other projects.",
   "main": "index.js",
   "scripts": {
     "test": "jest",
@@ -11,14 +10,23 @@
   "bin": {
     "envy": "./cli.js"
   },
-  "files": ["cli.js", "index.js", "spawn.js"],
-  "keywords": ["env", "environment", "dotenv", ".env", "config"],
+  "files": [
+    "cli.js",
+    "index.js",
+    "spawn.js"
+  ],
+  "keywords": [
+    "env",
+    "environment",
+    "dotenv",
+    ".env",
+    "config"
+  ],
   "author": "Remy Sharp",
   "license": "MIT",
   "dependencies": {
     "dotenv": "^4.0.0",
-    "dotenv-expand": "^4.2.0",
-    "dotenv-safe": "^6.0.0"
+    "dotenv-expand": "^4.2.0"
   },
   "devDependencies": {
     "jest": "^21.2.1"

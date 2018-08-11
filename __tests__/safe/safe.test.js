@@ -2,13 +2,16 @@ process.env.NODE_ENV = 'foo';
 process.chdir(__dirname);
 
 test('reads local over all others', () => {
-  expect(() => {
+  const t = () => {
     require('../../');
-  }).toThrow();
+  };
+
+  expect(t).toThrow(/BASIC_EXPAND/);
   expect(process.env.BASIC_EXPAND).toBe(undefined);
+  expect(process.env.ENV).toBe('local');
 });
 
-afterAll(() => {
+afterEach(() => {
   delete process.env.ENV;
   delete process.env.BASIC_EXPAND;
   delete process.env.BASIC;

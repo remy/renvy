@@ -43,32 +43,42 @@ var dotenvFiles = [
 // that have already been set.
 // https://github.com/motdotla/dotenv
 
-const hasExample = fs.existsSync(`${dotenvPath}.example`);
+const exampleFiles = [];
 
 dotenvFiles.forEach(dotenvFile => {
   if (fs.existsSync(dotenvFile)) {
     const dotenvExpand = require('dotenv-expand');
     const config = {
       path: dotenvFile,
+      allowEmptyValues: true,
     };
 
-    if (hasExample) {
-      try {
-        require('dotenv-safe').config(config);
-      } catch (e) {
-        e.message =
-          e.message
-            .replace(/If you expect any of these variables(?:.|\s)+$/im, '')
-            .trim() + '\n';
-        throw e;
-      }
-    } else {
-      require('dotenv').config(config);
+    if (fs.existsSync(`${dotenvFile}.example`)) {
+      exampleFiles.push(`${dotenvFile}.example`);
     }
+    require('dotenv').config(config);
 
     if (!process.env.NO_EXPAND) dotenvExpand({ parsed: process.env });
   }
 });
+
+if (exampleFiles.length) {
+  exampleFiles.forEach(exampleFile => {
+    const exampleVars = require('dotenv').parse(fs.readFileSync(exampleFile));
+
+    const missing = Object.keys(exampleVars).filter(key => !process.env[key]);
+
+    if (missing.length) {
+      const error = new Error();
+      error.name = 'MissingEnvVarsError';
+      error.missing = missing;
+      error.message = `The following variables were defined in .env.example but are not present in the environment:\n  ${missing.join(
+        ', '
+      )}\n`;
+      throw error;
+    }
+  });
+}
 
 // We support resolving modules according to `NODE_PATH`.
 // This lets you use absolute paths in imports inside large monorepos:
