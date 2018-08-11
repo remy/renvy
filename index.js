@@ -50,7 +50,6 @@ dotenvFiles.forEach(dotenvFile => {
     const dotenvExpand = require('dotenv-expand');
     const config = {
       path: dotenvFile,
-      allowEmptyValues: true,
     };
 
     if (fs.existsSync(`${dotenvFile}.example`)) {
