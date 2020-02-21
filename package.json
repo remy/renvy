@@ -1,18 +1,21 @@
 {
-  "name": "@remy/envy",
+  "name": "renvy",
   "version": "4.0.2",
-  "description": "The create-react-app environment loader, enhanced and separated for consistent reuse in other projects.",
+  "description": "A sensible and controllable env file loader.",
   "main": "index.js",
   "scripts": {
     "test": "jest",
-    "try": "NODE_ENV=test node -e 'console.log(process.env.NODE_ENV)'"
+    "try": "NODE_ENV=renvy node -e 'console.log(process.env.NODE_ENV)'",
+    "start": "node web.js"
   },
   "bin": {
-    "envy": "./cli.js"
+    "envy": "./cli.js",
+    "renvy": "./cli.js"
   },
   "files": [
     "cli.js",
     "index.js",
+    "web.js",
     "spawn.js"
   ],
   "keywords": [
@@ -29,14 +32,14 @@
     "dotenv-expand": "^4.2.0"
   },
   "devDependencies": {
-    "jest": "^21.2.1"
+    "jest": "^25.1.0"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/remy/envy.git"
+    "url": "git+https://github.com/remy/renvy.git"
   },
   "bugs": {
-    "url": "https://github.com/remy/envy/issues"
+    "url": "https://github.com/remy/renvy/issues"
   },
-  "homepage": "https://github.com/remy/envy#readme"
+  "homepage": "https://github.com/remy/renvy#readme"
 }
