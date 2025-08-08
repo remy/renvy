@@ -17,9 +17,11 @@ const path = require('path');
 // Make sure any symlinks in the project folder are resolved:
 // https://github.com/facebookincubator/create-react-app/issues/637
 const appDirectory = fs.realpathSync(process.cwd());
-const resolveApp = relativePath => path.resolve(appDirectory, relativePath);
+const resolveApp = (relativePath) => path.resolve(appDirectory, relativePath);
 
 const dotenvPath = resolveApp('.env');
+// Capture the original environment as loaded at startup
+const originalEnv = { ...process.env };
 
 let NODE_ENV = process.env.NODE_ENV;
 if (!NODE_ENV) {
@@ -45,11 +47,12 @@ var dotenvFiles = [
 
 const exampleFiles = [];
 
-dotenvFiles.forEach(dotenvFile => {
+dotenvFiles.forEach((dotenvFile) => {
   if (fs.existsSync(dotenvFile)) {
-    const dotenvExpand = require('dotenv-expand');
+    const { expand: dotenvExpand } = require('dotenv-expand');
     const config = {
       path: dotenvFile,
+      quiet: true,
     };
 
     if (fs.existsSync(`${dotenvFile}.example`)) {
@@ -62,16 +65,16 @@ dotenvFiles.forEach(dotenvFile => {
 });
 
 if (exampleFiles.length) {
-  exampleFiles.forEach(exampleFile => {
+  exampleFiles.forEach((exampleFile) => {
     const exampleVars = require('dotenv').parse(fs.readFileSync(exampleFile));
 
-    const missing = Object.keys(exampleVars).filter(key => !process.env[key]);
+    const missing = Object.keys(exampleVars).filter((key) => !process.env[key]);
 
     if (missing.length) {
       const error = new Error();
       error.name = 'MissingEnvVarsError';
       error.missing = missing;
-      error.message = `The following variables were defined in .env.example but are not present in the environment:\n  ${missing.join(
+      error.message = `The following variables were defined in .env.example but are not present in the environment: ${missing.join(
         ', '
       )}\n`;
       throw error;
@@ -90,8 +93,8 @@ if (exampleFiles.length) {
 // We also resolve them to make sure all tools using them work consistently.
 process.env.NODE_PATH = (process.env.NODE_PATH || '')
   .split(path.delimiter)
-  .filter(folder => folder && !path.isAbsolute(folder))
-  .map(folder => path.resolve(appDirectory, folder))
+  .filter((folder) => folder && !path.isAbsolute(folder))
+  .map((folder) => path.resolve(appDirectory, folder))
   .join(path.delimiter);
 
 // Grab NODE_ENV and REACT_APP_* environment variables and prepare them to be
@@ -102,9 +105,9 @@ process.env.NODE_PATH = (process.env.NODE_PATH || '')
  * @param {RegExp*} filterRe for instance /^REACT_APP_/i
  * @param {Object*} extend optional additional env values to return
  */
-function getClientEnvironment(filterRe, extend) {
+function getClientEnvironment({ filterRe, extend }) {
   const raw = Object.keys(process.env)
-    .filter(key => !filterRe || filterRe.test(key))
+    .filter((key) => !filterRe || filterRe.test(key))
     .reduce((env, key) => {
       env[key] = process.env[key];
       return env;
@@ -120,4 +123,36 @@ function getClientEnvironment(filterRe, extend) {
   return { raw, stringified };
 }
 
+// prioritiseFiles exports a function that reloads process.env
+function prioritiseFiles() {
+  // Build the list of dotenv files in the same order as loading, i.e. local first then env-specific then main
+  const files = [
+    `${dotenvPath}.${NODE_ENV}.local`,
+    `${dotenvPath}.${NODE_ENV}`,
+    NODE_ENV !== 'test' && `${dotenvPath}.local`,
+    dotenvPath,
+  ].filter(Boolean);
+
+  // Merge parsed values with override semantics (later files override earlier values)
+  const mergedFromFiles = {};
+
+  files.forEach((f) => {
+    if (fs.existsSync(f)) {
+      try {
+        const parsed = require('dotenv').parse(fs.readFileSync(f));
+        Object.assign(mergedFromFiles, parsed);
+      } catch (e) {
+        // Ignore parse errors to preserve current environment as much as possible
+      }
+    }
+  });
+
+  // Overwrite process.env so that files override the original OS environment
+  Object.keys(process.env).forEach((k) => delete process.env[k]);
+  Object.assign(process.env, { ...originalEnv, ...mergedFromFiles });
+
+  return { originalEnv, mergedFromFiles };
+}
+
 module.exports = getClientEnvironment;
+module.exports.prioritiseFiles = prioritiseFiles;

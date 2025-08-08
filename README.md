@@ -20,6 +20,30 @@ require('renvy'); // do this as early as possible in the code
 const { raw, stringified } = require('renvy');
 ```
 
+## Runtime reloading (prioritiseFiles)
+
+A new exported function prioritiseFilesReloads the environment by re-reading the dotenv files in the same priority order as startup, while preserving the original startup environment.
+
+- The function is prioritiseFiles (note the British spelling) and is exported from index.js as module.exports.prioritiseFiles.
+- It captures the original environment, then loads the dotenv files in the same sequence used at startup:
+  - .env.<NODE_ENV>.local
+  - .env.<NODE_ENV>
+  - .env.local (only if NODE_ENV is not 'test')
+  - .env
+- Values loaded from these files are merged with later files overriding earlier ones. The result overwrites process.env, but the original environment captured at startup is preserved in the return value.
+
+Usage example:
+
+```js
+const { prioritiseFiles } = require('./index.js');
+
+// Reload process.env according to the configured priority.
+prioritiseFiles();
+```
+
+Notes:
+- This mirrors the startup behaviour, but prioritises the local `.env` files over the existing environment.
+
 ## Env file loading priority
 
 Files on the left have more priority than files on the right:
